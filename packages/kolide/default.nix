@@ -32,8 +32,7 @@ let
 
           nix-store --add-fixed sha256 ${name}
       '';
-      sha256 =
-        "8dcf5b41dfac5388d6f3b5789496a5abc87a6885d3edfc07e8c5df778fd9c3a7";
+      sha256 = "sha256-jc9bQd+sU4jW87V4lJalq8h6aIXT7fwH6MXfd4/Zw6c=";
     };
     bin = fetchzip {
       url =
