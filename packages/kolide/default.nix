@@ -1,14 +1,6 @@
 { lib, stdenv, autoPatchelfHook, fetchzip, makeWrapper, dpkg, requireFile }:
 
 let
-  pkgs = import <nixpkgs> { };
-  lib = pkgs.lib;
-  stdenv = pkgs.stdenv;
-  autoPatchelfHook = pkgs.autoPatchelfHook;
-  fetchzip = pkgs.fetchzip;
-  makeWrapper = pkgs.makeWrapper;
-  dpkg = pkgs.dpkg;
-  requireFile = pkgs.requireFile;
   version = "0.11.12";
   workDir = "/var/lib/kolide-k2";
 
