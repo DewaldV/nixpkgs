@@ -2,7 +2,7 @@
 let
   rev = "1.0";
   build = "1921";
-  sha256 = "888020e6528bcfab351d4eb9b63fb2e36aa018264ca83b667b68db978e643aa1";
+  sha256 = "189scj79gnv8gdk3pa2c4qca0sp3n8zvdfaf3lsspkwbabk21048";
 in stdenv.mkDerivation {
   src = fetchurl {
     url = "https://s3-eu-west-1.amazonaws.com/uswitch-tools/u/${build}/linux/u";
