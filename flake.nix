@@ -11,9 +11,14 @@
           overlays = [ self.overlay.${system} ];
         };
       in rec {
-        packages = { rvu-u = pkgs.callPackage ./packages/u { }; };
+        packages = {
+          rvu-u = pkgs.callPackage ./packages/u { };
+          rvu-kolide = pkgs.callPackage ./packages/kolide { };
+        };
 
-        overlay = (final: prev: { inherit (self.packages.${system}) rvu-u; });
+        overlay = (final: prev: {
+          inherit (self.packages.${system}) rvu-u rvu-kolide;
+        });
 
         formatter = pkgs.nixpkgs-fmt;
       });
