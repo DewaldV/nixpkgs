@@ -1,7 +1,8 @@
 { lib, stdenv, autoPatchelfHook, fetchzip, makeWrapper, dpkg, requireFile }:
 
 let
-  version = "0.11.12";
+  version = "0.13.2";
+  osqueryVersion = "5.7.0";
   workDir = "/var/lib/kolide-k2";
 
   system = if stdenv.isLinux then
@@ -11,34 +12,25 @@ let
   else
     throw "kolide-launcher-k2 is not available for this platform";
 
-  srcs = {
-    deb = requireFile rec {
-      name = "kolide-launcher.deb";
-      url = "https://COMPANY-URL-TO-DEB-PACKAGE";
-      message = ''
-        This Nix expression requires that ${name} already be part of the store. To
-        obtain it you need to
+  src = requireFile rec {
+    name = "kolide-launcher.deb";
+    url = "https://COMPANY-URL-TO-DEB-PACKAGE";
+    message = ''
+      This Nix expression requires that ${name} already be part of the store. To
+      obtain it you need to
 
-        - Download the deb file from ${url}
-        - Add the file to the Nix store using:
+      - Download the deb file from ${url}
+      - Add the file to the Nix store using:
 
-          nix-store --add-fixed sha256 ${name}
-      '';
-      sha256 = "sha256-jc9bQd+sU4jW87V4lJalq8h6aIXT7fwH6MXfd4/Zw6c=";
-    };
-    bin = fetchzip {
-      url =
-        "https://github.com/kolide/launcher/releases/download/v${version}/launcher_v${version}.zip";
-      sha256 = "1a1icllds1cariinkb5sbrfrm4nrykrkmb2rafrrc72sykrqkw6m";
-      stripRoot = false;
-    };
+        nix-store --add-fixed sha256 ${name}
+    '';
+    sha256 = "sha256-jc9bQd+sU4jW87V4lJalq8h6aIXT7fwH6MXfd4/Zw6c=";
   };
 
 in stdenv.mkDerivation {
   pname = "kolide-launcher-k2";
   inherit version;
-
-  src = srcs.deb;
+  inherit src;
 
   nativeBuildInputs = [ autoPatchelfHook dpkg makeWrapper ];
 
@@ -48,11 +40,6 @@ in stdenv.mkDerivation {
   unpackPhase = "dpkg-deb -x $src .";
 
   postPatch = ''
-    substituteInPlace lib/systemd/system/launcher.kolide-k2.service \
-      --replace "/usr/local/kolide-k2/bin" "$out/bin"
-    substituteInPlace lib/systemd/system/launcher.kolide-k2.service \
-      --replace "/etc" "$out/etc"
-
     substituteInPlace etc/kolide-k2/launcher.flags \
       --replace "/usr/local/kolide-k2/bin" "${workDir}/bin"
     substituteInPlace etc/kolide-k2/launcher.flags \
@@ -64,9 +51,9 @@ in stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out $out/bin $out/wbin $out/etc $out/lib $out/share
 
-    cp -r ${srcs.bin}/${system}/* $out/wbin/
     cp -r etc/* $out/etc/
     cp -r lib/* $out/lib/
+    cp -r usr/local/kolide-k2/bin/* $out/wbin/
     cp -r usr/share/* $out/share/
 
     cat > $out/bin/launcher <<EOF
