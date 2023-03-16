@@ -1,7 +1,7 @@
 { lib, stdenv, autoPatchelfHook, fetchzip, makeWrapper, dpkg, requireFile }:
 
 let
-  version = "0.13.2";
+  version = "1.0.3";
   osqueryVersion = "5.7.0";
   workDir = "/var/lib/kolide-k2";
 
