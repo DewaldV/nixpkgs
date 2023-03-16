@@ -24,7 +24,7 @@ let
 
         nix-store --add-fixed sha256 ${name}
     '';
-    sha256 = "sha256-ZYPGp3g7BdppF1HhUUxKDkr7gJg5Tb4cktUT/eiOwpE=";
+    sha256 = "sha256-jc9bQd+sU4jW87V4lJalq8h6aIXT7fwH6MXfd4/Zw6c=";
   };
 
 in stdenv.mkDerivation {
