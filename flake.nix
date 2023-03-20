@@ -21,5 +21,7 @@
         });
 
         formatter = pkgs.nixpkgs-fmt;
-      });
+      }) // {
+        nixosModules.rvu-kolide = import ./modules/services/kolide;
+      };
 }
